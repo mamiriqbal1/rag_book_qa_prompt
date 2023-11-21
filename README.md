@@ -45,9 +45,29 @@ You can run the notebook locally.
 ### Running locally
 
 1. Clone the repo locally
+
+    ```bash
+    git clone https://github.com/mamiriqbal1/rag_book_qa_prompt.git
+    ```
+
 2. CD to local repo directory
-3. Install all the requirements using pip install -r requirements.txt
+
+    ```bash
+    cd rag_book_qa_prompt
+    ```
+
+3. Install all the requirements
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
 4. Open jupyter notebook and execute
+
+    ```bash
+    jupyter notebook rag_book_qa_prompt.ipynb
+    ```
+
 
 ## Using your own pdf file
 
