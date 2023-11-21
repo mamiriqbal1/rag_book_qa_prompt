@@ -2,7 +2,7 @@
 
 A simple demonstration of how you can implement retrieval augmented generation for a book.
 
-## How retrieval augmented generation works
+## 🚀 How retrieval augmented generation works
 
 Following are the high level steps needed for the implementation for retrieval augmented generation.
 
@@ -13,7 +13,7 @@ Following are the high level steps needed for the implementation for retrieval a
 5. Insert these text chunks in the prompt along with the question.
 6. Request an LLM (e.g. chatgpt) to produce an answer *only* based on the context
 
-## What do you find here
+## 🌟 What would you find here
 
 The notebook demonstrate the following steps 
 
@@ -29,7 +29,7 @@ The notebook demonstrate the following steps
 
 The idea of creating this simple implementation is to quickly demonstrate how thing actually work in retrieval augmented generation. You do not need to acquire any API key or install a LLM locally.
 
-## Name of the game
+## 🧨 Name of the game
 
 The success of any RAG implementation mainly depends on the following aspects
 
@@ -38,26 +38,20 @@ The success of any RAG implementation mainly depends on the following aspects
 3. You should test different number of top similar results that gives the best performance.
 4. You can not have a universal prompt template that will work with every LLM. You will have to fine-tune the prompt for the specific LLM you are using in order to get best results.
 
-## Getting started
+## 🎬 Getting started
 
-You can run the notebook on google colab or locally.
-
-### Using google colab
-
-1. Open the notebook on google colab
-2. Execute all the steps till the last cell
-3. Experiment by changing the question
+You can run the notebook locally.
 
 ### Running locally
 
 1. Clone the repo locally
-2. Cd to local rep directory
+2. CD to local repo directory
 3. Install all the requirements using pip install -r requirements.txt
 4. Open jupyter notebook and execute
 
 ## Using your own pdf file
 
-1. Add the pdf file(s) to books subfolder.
-2. Change the relevant code to successfully extract needed text from the code.
+1. Add the pdf file to books subfolder.
+2. Customize the relevant code to adequately extract needed text from the PDF.
 3. Un-comment and execute the code that creates index and saves it on the disk.
-4. Rest stays the same
+4. Rest of the steps stay the same.
