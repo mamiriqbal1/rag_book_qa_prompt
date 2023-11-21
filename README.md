@@ -22,7 +22,7 @@ The notebook demonstrate the following steps
     - Following sections are excluded: table of content, index, sample questions at the end of each chapter, diagrams, tables, and other elements that were not part of the main text.
     - Every document needs to be carefully analyzed in order to extract useful text. This step is of utmost importance since answers to any user questions will depend upon the quality of input provided to the large language model.
 2. The text was splitted into chunks and vector embeddings were created using HuggingFaceInstructEmbeddings.
-3. Lanchain's FAISS vector store is used for saving embeddings.
+3. Langchain's FAISS vector store is used for saving embeddings.
 4. Relevant texts were retrieved using similarity search
 5. The final prompt is generated based on the searched context and copied to clipboard.
 6. You just need to open you favorite LLM (e.g. chat.openai.com) and past the prompt to get the required answer.
