@@ -1,6 +1,6 @@
 # Interact with your book 📖❓🙋🏻‍♀️
 
-A simple demonstration of how you can implement retrieval augmented generation for a book.
+A simple demonstration of how you can implement retrieval augmented generation (RAG) using a book.
 
 ## 🚀 How retrieval augmented generation works
 
@@ -24,7 +24,7 @@ The notebook demonstrate the following steps
 2. The text was splitted into chunks and vector embeddings were created using HuggingFaceInstructEmbeddings.
 3. Langchain's FAISS vector store is used for saving embeddings.
 4. Relevant texts were retrieved using similarity search
-5. The final prompt is generated based on the searched context and copied to clipboard.
+5. The final prompt is generated based on the searched context and copied to the clipboard.
 6. You just need to open you favorite LLM (e.g. chat.openai.com) and past the prompt to get the required answer.
 
 The idea of creating this simple implementation is to quickly demonstrate how thing actually work in retrieval augmented generation. You do not need to acquire any API key or install a LLM locally.
@@ -70,16 +70,18 @@ You can run the notebook locally and use the final prompt to generate an answer 
     pip install -r requirements.txt
     ```
 
-4. Open jupyter notebook and execute
+4. Open jupyter notebook and run all the cells. Wait for execution to complete. You can then change your question and re-run the last cell again and again to get the final prompt for using with you favorite LLM.
 
     ```bash
     jupyter notebook rag_book_qa_prompt.ipynb
     ```
 
 
-## Using your own pdf file
+## Using your own PDF file
 
-1. Add the pdf file to books subfolder.
+You can use your own PDF file with this notebook.
+
+1. Add the PDF file to books subfolder.
 2. Customize the relevant code to adequately extract needed text from the PDF.
 3. Un-comment and execute the code that creates index and saves it on the disk.
 4. Rest of the steps stay the same.
