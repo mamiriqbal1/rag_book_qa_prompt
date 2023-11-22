@@ -40,7 +40,15 @@ The success of any RAG implementation mainly depends on the following aspects
 
 ## 🎬 Getting started
 
-You can run the notebook locally.
+You can run the notebook locally and use the final prompt to generate an answer with the help of your favorite LLM.
+
+### Pre-requisite
+
+1. Python 3.11, preferably in a virtual environment.
+2. Access to a large language model for example:
+    - <https://chat.openai.com>
+    - <https://www.llama2.ai>
+    - <https://huggingface.co/chat>
 
 ### Running locally
 

@@ -13,3 +13,4 @@ rich
 InstructorEmbedding
 faiss-cpu
 pyperclip
+ipywidgets
