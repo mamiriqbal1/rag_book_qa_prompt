@@ -11,3 +11,4 @@ torch
 tqdm
 rich
 InstructorEmbedding
+faiss-cpu
