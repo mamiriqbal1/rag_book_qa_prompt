@@ -1,6 +1,6 @@
 # Interact with your book 📖❓🙋🏻‍♀️
 
-A simple demonstration of how you can implement retrieval augmented generation (RAG) using a book.
+A simple demonstration of how you can implement retrieval augmented generation (RAG) for a book.
 
 ## 🚀 How retrieval augmented generation works
 
