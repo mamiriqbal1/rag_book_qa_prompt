@@ -12,3 +12,4 @@ tqdm
 rich
 InstructorEmbedding
 faiss-cpu
+pyperclip
