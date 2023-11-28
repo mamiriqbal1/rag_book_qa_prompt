@@ -4,9 +4,11 @@ from langchain.document_loaders import DirectoryLoader
 from langchain.schema import Document
 # splits
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import NLTKTextSplitter
 
 # prompts
-from langchain import PromptTemplate, LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
 # vector stores
 from langchain.vectorstores import FAISS
@@ -49,13 +51,12 @@ def include_page(page_number):
 
 parts = []
 def visitor_body(text, cm, tm, fontDict, fontSize):
-    if fontDict is not None and '/ILTBBB+OfficinaSansStd' in fontDict['/BaseFont']:
+    if tm[5] > 60 and tm[5] < 740:  # exclude header and footer
         parts.append(text)
 
 def extract_single_page(page):
-    page.extract_text(visitor_text=visitor_body),
+    page.extract_text(visitor_text=visitor_body)
     text_body = "".join(parts)
-    text_body = text_body.replace('\n', ' ')
     return text_body
 
 
@@ -68,10 +69,7 @@ def extract_pages(pdf_reader, source):
                     page_content = extract_single_page(page),
                     metadata={"source": source, "page": page_number},
                     ) 
-            if len(doc.page_content) > 100:
-                documents.append(doc)
-            else:
-                print('dropped page content: ' + doc.page_content)
+            documents.append(doc)
             global parts
             parts =[]
     return documents
@@ -83,26 +81,32 @@ documents = extract_pages(reader, "Cambridge IGCSE and O Level Computer Science.
 
 print('pages extracted: ' + str(len(documents)))
 
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size = CFG.split_chunk_size,
-    chunk_overlap = CFG.split_overlap
-)
+# text_splitter = RecursiveCharacterTextSplitter(
+#     chunk_size = CFG.split_chunk_size,
+#     chunk_overlap = CFG.split_overlap
+# )
+
+# texts = text_splitter.split_documents(documents)
+
+text_splitter = NLTKTextSplitter()
 
 texts = text_splitter.split_documents(documents)
 
 print(f'We have created {len(texts)} chunks from {len(documents)} pages')
 
-### download embeddings model
-embeddings = HuggingFaceInstructEmbeddings(
-    model_name = CFG.embeddings_model_repo,
-    model_kwargs = {"device": "cpu"}
-)
+print('done')
 
-### create embeddings and DB
-vectordb = FAISS.from_documents(
-    documents = texts, 
-    embedding = embeddings
-)
+# ### download embeddings model
+# embeddings = HuggingFaceInstructEmbeddings(
+#     model_name = CFG.embeddings_model_repo,
+#     model_kwargs = {"device": "cpu"}
+# )
 
-### persist vector database
-vectordb.save_local("faiss_index_hp")
+# ### create embeddings and DB
+# vectordb = FAISS.from_documents(
+#     documents = texts, 
+#     embedding = embeddings
+# )
+
+# ### persist vector database
+# vectordb.save_local("faiss_index_hp")
