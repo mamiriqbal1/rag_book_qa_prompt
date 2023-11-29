@@ -97,12 +97,12 @@ print('pages extracted: ' + str(len(documents)))
 
 ### Split text
 
-text_splitter = NLTKTextSplitter()
-texts = text_splitter.split_documents(documents)
+# text_splitter = NLTKTextSplitter()
+# texts = text_splitter.split_documents(documents)
 
-print(f'We have created {len(texts)} chunks from {len(documents)} pages')
+# print(f'We have created {len(texts)} chunks from {len(documents)} pages')
 
-print('done')
+# print('done')
 
 ### Create vector embeddings
 
@@ -113,7 +113,7 @@ embeddings = HuggingFaceInstructEmbeddings(
 )
 
 vectordb = FAISS.from_documents(
-    documents = texts, 
+    documents = documents, 
     embedding = embeddings
 )
 
