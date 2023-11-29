@@ -15,15 +15,15 @@ Following are the high level steps needed for the implementation for retrieval a
 
 ## 🌟 What would you find here
 
-The notebook demonstrate the following steps 
+The notebook demonstrate the following steps
 
 1. Extraction of the relevant text from Cambridge O Level Computer Science book.
-    - Only the main body text is extracted.
-    - Following sections are excluded: table of content, index, sample questions at the end of each chapter, diagrams, tables, and other elements that were not part of the main text.
+    - Only the main body text including tables is extracted.
+    - Following sections are excluded: table of content, index, sample questions at the end of each chapter, and diagrams.
     - Every document needs to be carefully analyzed in order to extract useful text. This step is of utmost importance since answers to any user questions will depend upon the quality of input provided to the large language model.
-2. The text was splitted into chunks and vector embeddings were created using HuggingFaceInstructEmbeddings.
+2. The text was splitted into chunks using NLTKTextSplitter and vector embeddings were created using HuggingFaceInstructEmbeddings.
 3. Langchain's FAISS vector store is used for saving embeddings.
-4. Relevant texts were retrieved using similarity search
+4. Text relevant to the user query were retrieved from the index database using similarity search.
 5. The final prompt is generated based on the searched context and copied to the clipboard.
 6. You just need to open you favorite LLM (e.g. chat.openai.com) and past the prompt to get the required answer.
 
@@ -34,7 +34,7 @@ The idea of creating this simple implementation is to quickly demonstrate how th
 The success of any RAG implementation mainly depends on the following aspects
 
 1. The quality of input data. If the data is unstructured, you need to carefully analyze and extract relevant and useful text only. The quality of input determines the quality of the answers you will get from LLM.
-2. You should to experiment with chunk sizes and overlaps that are suitable for your application
+2. You should experiment with different text splitters and decide which one works best for your application.
 3. You should test different number of top similar results that gives the best performance.
 4. You can not have a universal prompt template that will work with every LLM. You will have to fine-tune the prompt for the specific LLM you are using in order to get best results.
 
@@ -76,12 +76,11 @@ You can run the notebook locally and use the final prompt to generate an answer 
     jupyter notebook rag_book_qa_prompt.ipynb
     ```
 
-
 ## Using your own PDF file
 
 You can use your own PDF file with this notebook.
 
 1. Add the PDF file to books subfolder.
-2. Customize the relevant code to adequately extract needed text from the PDF.
-3. Un-comment and execute the code that creates index and saves it on the disk.
-4. Rest of the steps stay the same.
+2. Customize the relevant code in the python file extract_text_and_save_index.py to adequately extract needed text from the PDF.
+3. Run the modified python file to extract the text and create and save index.
+4. Use the provided jupyter notebook to perform QA on your new source file.

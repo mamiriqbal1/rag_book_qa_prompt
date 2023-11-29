@@ -1,5 +1,6 @@
-from PyPDF2 import PdfReader
-from langchain.document_loaders import PyPDFLoader
+import pandas as pd
+from tqdm import tqdm
+import pdfplumber
 from langchain.document_loaders import DirectoryLoader
 from langchain.schema import Document
 # splits
@@ -22,8 +23,9 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.chains import RetrievalQA
 
 
+### Open pdf file and extract text including tables
 
-reader = PdfReader("books/Cambridge IGCSE and O Level Computer Science.pdf")
+pdf_reader = pdfplumber.open("books/Cambridge IGCSE and O Level Computer Science.pdf")
     
 included_pages_intervals = [[14, 52],
                  [57, 82],
@@ -50,24 +52,36 @@ def include_page(page_number):
         return False
 
 parts = []
-def visitor_body(text, cm, tm, fontDict, fontSize):
-    if tm[5] > 60 and tm[5] < 740:  # exclude header and footer
-        parts.append(text)
+def include_text(obj):
+    if 'size' in obj and obj['size'] >= 10:  # include all main body text (exclude figures , tables, header/footer etc.)
+        return True
+    else:
+        return False
 
 def extract_single_page(page):
-    page.extract_text(visitor_text=visitor_body)
-    text_body = "".join(parts)
-    return text_body
+    f_page = page.filter(include_text)
+    text = f_page.extract_text()
+    tables = page.find_tables()
+    table_text = ''
+    for table in tables:
+        table_df = pd.DataFrame.from_records(table.extract())
+        # test if table is empty (if all values are either '' or null)
+        if (table_df == '').values.sum() + table_df.isnull().values.sum() == table_df.shape[0]*table_df.shape[1]:
+           pass  # Table is empty 
+        else:
+            table_text =  table_text + '\n\n' + table_df.to_html(header=False, index=False)
+
+    return text + '\n\n' + table_text
 
 
 def extract_pages(pdf_reader, source):
     documents = []
     
-    for page_number, page in enumerate(pdf_reader.pages):
+    for page_number, page in tqdm(enumerate(pdf_reader.pages), total=len(pdf_reader.pages)):
         if include_page(page_number):
             doc = Document(
                     page_content = extract_single_page(page),
-                    metadata={"source": source, "page": page_number},
+                    metadata={"source": source, "page": page_number - 11},
                     ) 
             documents.append(doc)
             global parts
@@ -77,36 +91,31 @@ def extract_pages(pdf_reader, source):
 
 
 
-documents = extract_pages(reader, "Cambridge IGCSE and O Level Computer Science.pdf")
+documents = extract_pages(pdf_reader, "Cambridge IGCSE and O Level Computer Science.pdf")
 
 print('pages extracted: ' + str(len(documents)))
 
-# text_splitter = RecursiveCharacterTextSplitter(
-#     chunk_size = CFG.split_chunk_size,
-#     chunk_overlap = CFG.split_overlap
-# )
-
-# texts = text_splitter.split_documents(documents)
+### Split text
 
 text_splitter = NLTKTextSplitter()
-
 texts = text_splitter.split_documents(documents)
 
 print(f'We have created {len(texts)} chunks from {len(documents)} pages')
 
 print('done')
 
-# ### download embeddings model
-# embeddings = HuggingFaceInstructEmbeddings(
-#     model_name = CFG.embeddings_model_repo,
-#     model_kwargs = {"device": "cpu"}
-# )
+### Create vector embeddings
 
-# ### create embeddings and DB
-# vectordb = FAISS.from_documents(
-#     documents = texts, 
-#     embedding = embeddings
-# )
+### download embeddings model
+embeddings = HuggingFaceInstructEmbeddings(
+    model_name = 'sentence-transformers/all-MiniLM-L6-v2',
+    model_kwargs = {"device": "cpu"}
+)
 
-# ### persist vector database
-# vectordb.save_local("faiss_index_hp")
+vectordb = FAISS.from_documents(
+    documents = texts, 
+    embedding = embeddings
+)
+
+### Persist embeddings in vector database
+vectordb.save_local("faiss_index_hp")

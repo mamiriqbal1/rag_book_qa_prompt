@@ -1,4 +1,5 @@
-PyPDF2
+pdfplumber
+pandas
 langchain
 notebook
 transformers
